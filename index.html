@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Où est mon bus (Rennes)</title>
+	<meta name="description" content="Où est mon bus (Rennes)" />
+	<meta charset="utf-8">
+    <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
+
+    <link rel="import" href="elements/all.html"/>
+</head>
+<body>
+
+    <div id="detail-container">
+
+    </div>
+
+    <bus-liste-lignes>
+
+    </bus-liste-lignes>
+
+
+    <script>
+        document.querySelector('bus-liste-lignes').addEventListener('click-line', function(event) {
+            var line = event.detail.line;
+            document.querySelector('#detail-container').innerHTML = '<bus-detail-line lineId="' + line.id + '"></bus-detail-line>';
+        });
+    </script>
+</body>
+</html>

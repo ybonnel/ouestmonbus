@@ -48,7 +48,7 @@
 
                         self.latitude = sumLatitude / self.allBus.length;
                         self.longitude = sumLongitude / self.allBus.length;
-                        setTimeout(self.loadData.bind(self), 15000);
+                        setTimeout(self.loadData.bind(self), 120000);
                     },
                     error: function(json) {
                         console.log(json);

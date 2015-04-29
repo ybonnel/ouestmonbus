@@ -1,0 +1,64 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-shared-lib/core-shared-lib.html">
+<link rel="import" href="../bower_components/google-map/google-map.html">
+
+<polymer-element name="bus-detail-line" attributes="lineId">
+    <template>
+        <style>
+            google-map {
+                height: 400px;
+            }
+        </style>
+        <google-map latitude="{{latitude}}" longitude="{{longitude}}" fitToMarkers>
+            <template repeat="{{bus in allBus}}">
+                <google-map-marker latitude="{{bus.latitude}}" longitude="{{bus.longitude}}"></google-map-marker>
+            </template>
+        </google-map>
+
+    </template>
+    <script src="../bower_components/underscore/underscore-min.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script>
+        Polymer('bus-detail-line', {
+            latitude:48.100,
+            longitude:-1.667,
+            apiKey: 'd366bf8684b3b3253a566602cfbc5017f0bebfb622042b19d45ecb2e',
+            url: function() {
+                return 'https://data.explore.star.fr/api/records/1.0/search?apikey=' + this.apiKey + '&dataset=tco-bus-vehicules-position-tr&q=idligne:' + this.lineId + '&rows=9999'
+            },
+            loadData: function() {
+                var self = this;
+                $.ajax({
+                    type:'GET',
+                    url: this.url(),
+                    async: false,
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        var sumLatitude = 0;
+                        var sumLongitude = 0;
+                        self.allBus = _.map(json.records, function (bus) {
+                            sumLatitude += bus.fields.coordonnees[0];
+                            sumLongitude += bus.fields.coordonnees[1];
+                            return {
+                                destination: bus.fields.destination,
+                                latitude:bus.fields.coordonnees[0],
+                                longitude:bus.fields.coordonnees[1]
+                            }
+                        });
+
+                        self.latitude = sumLatitude / self.allBus.length;
+                        self.longitude = sumLongitude / self.allBus.length;
+                        setTimeout(self.loadData.bind(this), 15000);
+                    },
+                    error: function(json) {
+                        console.log(json);
+                    }
+                })
+            },
+            ready: function() {
+                this.loadData();
+            }
+        });
+    </script>
+
+</polymer-element>

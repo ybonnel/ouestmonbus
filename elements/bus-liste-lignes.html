@@ -1,0 +1,39 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-shared-lib/core-shared-lib.html">
+<link rel="import" href="bus-line.html">
+
+<polymer-element name="bus-liste-lignes">
+    <template>
+        <core-shared-lib on-core-shared-lib-load="{{loadedlines}}" url="https://data.explore.star.fr/api/records/1.0/search?apikey=d366bf8684b3b3253a566602cfbc5017f0bebfb622042b19d45ecb2e&dataset=tco-bus-topologie-lignes-td&rows=9999&callback=%%callback%%" ></core-shared-lib>
+
+        <template repeat="{{line in lines}}">
+            <bus-line color="{{line.lineColor}}" textColor="{{line.textColor}}" clickHandler="{{clickLine(line)}}">{{line.shortName}}</bus-line>
+        </template>
+
+    </template>
+    <script src="../bower_components/underscore/underscore-min.js"></script>
+    <script>
+        Polymer('bus-liste-lignes', {
+            loadedlines: function(event) {
+                var data = event.detail[1][0];
+                this.lines = _.sortBy(_.map(data.records, function (record) {
+                    return {
+                        id: record.fields.id,
+                        shortName: record.fields.nomcourt,
+                        longName: record.fields.nomlong,
+                        lineColor: record.fields.couleurligne,
+                        textColor: record.fields.couleurtexteligne,
+                    }
+                }), function (line) {
+                    return line.id;
+                });
+            },
+            clickLine: function(line) {
+                return function() {
+                    this.fire('click-line', {line: line});
+                }
+            }
+        });
+    </script>
+
+</polymer-element>

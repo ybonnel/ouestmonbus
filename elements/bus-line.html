@@ -1,0 +1,29 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element name="bus-line" attributes="color textColor clickHandler">
+    <template>
+        <style>
+            div.contener {
+                display: inline-block;
+                margin: 4px;
+                height: 120px;
+                width: 120px;
+                text-align:center;
+                line-height:120px;
+                font-weight: bold;
+                font-size: 30px;
+                cursor: pointer;
+                color: #{{textColor}};
+                background-color: #{{color}};
+            }
+        </style>
+        <div class="contener" on-click="{{clickHandler}}">
+            <content></content>
+        </div>
+    </template>
+    <script>
+        Polymer('bus-line', {
+        });
+    </script>
+
+</polymer-element>

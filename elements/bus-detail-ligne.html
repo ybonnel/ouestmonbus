@@ -11,7 +11,9 @@
         </style>
         <google-map latitude="{{latitude}}" longitude="{{longitude}}" fitToMarkers>
             <template repeat="{{bus in allBus}}">
-                <google-map-marker latitude="{{bus.latitude}}" longitude="{{bus.longitude}}"></google-map-marker>
+                <google-map-marker latitude="{{bus.latitude}}" longitude="{{bus.longitude}}">
+                    Destination : {{bus.destination}}
+                </google-map-marker>
             </template>
         </google-map>
 

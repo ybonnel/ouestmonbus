@@ -84,8 +84,10 @@
                                 longitude: bus.fields.coordonnees[1]
                             }
                         });
-                        self.latitude = sumLatitude / allBus.length;
-                        self.longitude = sumLongitude / allBus.length;
+                        if (allBus.length > 0) {
+                            self.latitude = sumLatitude / allBus.length;
+                            self.longitude = sumLongitude / allBus.length;
+                        }
                         self.directions = [{
                             destination: "Toutes destinations",
                             allBus: allBus
